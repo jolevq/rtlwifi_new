@@ -42,3 +42,26 @@ vim /etc/modprobe.d/<<YOUR WIRELESS DRIVER CODE>>.conf
 There, enter the line below:
 `options <<YOUR WIRELESS DRIVER CODE>> <<driver_option_name>>=<value>`
 
+PASOS JOLEV OSSE
+And finally I found a solution that works for me (checked on 2 laptops of same model with different versions of Ubuntu: 16.04LTS and 17.04)
+
+Open Terminal, and enter:
+
+iwconfig
+And note down the wl* number.
+
+Download the new driver rock.new_btcoex from Github and unzip it to Desktop folder.
+
+In Terminal, now run these commands:
+
+cd Desktop/rtlwifi_new-rock.new_btcoex
+make
+sudo make install` type your ubuntu password
+sudo modprobe -rv rtl8723be
+sudo modprobe -v rtl8723be ant_sel=2
+sudo ip link set wl* up` use your **wl* number**
+sudo iw dev wl* scan` same
+To make the settings permanent, use this command:
+
+echo "options rtl8723be ant_sel=2" | sudo tee /etc/modprobe.d/50-rtl8723be.conf
+Note: After your OS (Kernel) update, you need to apply these settings again to get a strong signal.
